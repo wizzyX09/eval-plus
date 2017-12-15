@@ -11,4 +11,20 @@ public class Course {
     @Id
     @GeneratedValue
     private Integer id;
+
+    private String name;
+
+    private int courseCode;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCourseCode() {
+        return courseCode;
+    }
 }

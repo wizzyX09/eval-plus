@@ -13,16 +13,12 @@ import java.util.Set;
 public class User {
 
     private Long id;
-    @NotNull
-    @Length(min = 6,max = 32)
+
     private String username;
-    @NotNull
-    @Length(min=8,max=32)
+
     private String password;
-    @NotNull
-    @Length(min=8,max=32)
+
     private String passwordConfirm;
-    @Valid
     private Set<Role> roles;
 
     @Id
