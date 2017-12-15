@@ -1,12 +1,17 @@
 package edu.mum.evalplus.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
     private Long id;
+    @NotNull
+    @NotEmpty
     private String name;
     private Set<User> users;
 
