@@ -1,7 +1,6 @@
 package edu.mum.evalplus.model;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +11,7 @@ public class ClassOffered {
     @Id
     @GeneratedValue
     private Integer id;
-
+    private Boolean active;
     private String name;
 
 @ManyToMany(mappedBy = "classOfferedSet")

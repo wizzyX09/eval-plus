@@ -137,4 +137,19 @@ public class Survey {
     public void setClassOffered(ClassOffered classOffered) {
         this.classOffered = classOffered;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        return id.equals(survey.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
