@@ -18,7 +18,7 @@ public class Faculty {
      private String username;
      @Embedded
      private Person person;
-     @OneToMany(mappedBy = "faculty")
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
      private Set<ClassOffered> classOfferedSet;
 
      public Faculty() {
@@ -74,5 +74,18 @@ public class Faculty {
         return Collections.unmodifiableSet(classOfferedSet);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Faculty faculty = (Faculty) o;
+
+        return getId().equals(faculty.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

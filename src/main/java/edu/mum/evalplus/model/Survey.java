@@ -145,11 +145,11 @@ public class Survey {
 
         Survey survey = (Survey) o;
 
-        return id.equals(survey.id);
+        return getId().equals(survey.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getId().hashCode();
     }
 }

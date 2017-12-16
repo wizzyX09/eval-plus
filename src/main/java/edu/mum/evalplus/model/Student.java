@@ -65,4 +65,19 @@ public class Student {
     public Set<ClassOffered> getClassOfferedSet() {
         return Collections.unmodifiableSet(classOfferedSet);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        return getId().equals(student.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

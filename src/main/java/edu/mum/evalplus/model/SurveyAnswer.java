@@ -71,4 +71,19 @@ public class SurveyAnswer {
     public void setStudent(Student student) {
         this.student = student;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SurveyAnswer that = (SurveyAnswer) o;
+
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

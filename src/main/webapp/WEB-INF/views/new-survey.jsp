@@ -67,6 +67,15 @@
             <legend>Choose questions</legend>
         <form:checkboxes items="${questions}" path="questions" itemLabel="question" itemValue="id" delimiter="<br"/>
         </fieldset>
+
+        <fieldset>
+            <legend>Select a class</legend>
+
+            <c:forEach var="lecture" items="${lectures}">
+                <c:out value="${lecture.name}"></c:out>
+            </c:forEach>
+
+        </fieldset>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form:form>
 

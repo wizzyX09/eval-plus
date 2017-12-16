@@ -61,11 +61,11 @@ public class Question {
 
         Question question = (Question) o;
 
-        return id.equals(question.id);
+        return getId().equals(question.getId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getId().hashCode();
     }
 }

@@ -14,10 +14,10 @@ public class ClassOffered {
     private Boolean active;
     private String name;
 
-@ManyToMany(mappedBy = "classOfferedSet")
+    @ManyToMany(mappedBy = "classOfferedSet", fetch = FetchType.LAZY)
     private Set<Student> students;
 
-    @OneToMany(mappedBy = "classOffered")
+    @OneToMany(mappedBy = "classOffered", fetch = FetchType.LAZY)
     private Set<Survey> surveys;
 
     @ManyToOne
@@ -100,5 +100,28 @@ public class ClassOffered {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassOffered that = (ClassOffered) o;
+
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }
