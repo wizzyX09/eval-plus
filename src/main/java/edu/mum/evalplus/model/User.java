@@ -19,6 +19,7 @@ public class User {
     private String password;
 
     private String passwordConfirm;
+
     private Set<Role> roles;
 
     @Id

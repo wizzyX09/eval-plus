@@ -10,8 +10,6 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role {
     private Long id;
-    @NotNull
-    @NotEmpty
     private String name;
     private Set<User> users;
 

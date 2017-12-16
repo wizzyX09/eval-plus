@@ -33,11 +33,11 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-        userValidator.validate(userForm, bindingResult);
+       // userValidator.validate(userForm, bindingResult);
 
-        if (bindingResult.hasErrors()) {
+       /* if (bindingResult.hasErrors()) {
             return "registration";
-        }
+        }*/
 
         userService.save(userForm);
 
@@ -59,6 +59,6 @@ public class UserController {
 
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model) {
-        return "welcome";
+        return "home";
     }
 }
