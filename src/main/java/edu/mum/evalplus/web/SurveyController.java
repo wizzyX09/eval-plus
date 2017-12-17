@@ -12,10 +12,13 @@ import edu.mum.evalplus.util.DateParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @Controller
 public class SurveyController {
@@ -38,7 +41,7 @@ public class SurveyController {
 
     @RequestMapping(value = "/newSurvey", method = RequestMethod.POST)
     public String createSurvey(@RequestParam("endDate") String endDate, @RequestParam("status") SurveyStatus status, @RequestParam("resubmissionAllowed") Boolean resubmissionAllowed, @RequestParam("classOffered") Integer id,
-                               @RequestParam("question") Integer[] questionsId) {
+                               @RequestParam("questions") Integer[] questionsId) {
         ClassOffered classOffered = new ClassOffered();
         Survey survey = new Survey();
         classOffered.setId(id);
@@ -58,6 +61,24 @@ public class SurveyController {
         ModelAndView mav = new ModelAndView("manageSurvey");
         mav.addObject("surveys", surveyService.findAll());
         return mav;
+    }
+
+
+    @RequestMapping(value = "/takeSurvey", method = RequestMethod.GET)
+    public String takeSurvey(Model model, Principal principal) {
+        model.addAttribute("surveys", surveyService.findStudentSurvey(principal.getName()));
+        return "studentSurvey";
+    }
+
+    @RequestMapping(value = "/takeSurvey/{id}", method = RequestMethod.GET)
+    public String takeSurvey(@PathVariable("id") int id, Model model) {
+        model.addAttribute("survey", surveyService.find(id));
+        return "takeSurvey";
+    }
+
+    @RequestMapping(value = "/takeSurvey", method = RequestMethod.POST)
+    public String saveSurvey(@RequestParam("surveyId") Integer surveyId, String[] answers, Model model) {
+        return "redirect:/home";
     }
 
 }

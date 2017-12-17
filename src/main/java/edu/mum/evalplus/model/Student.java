@@ -15,7 +15,7 @@ public class Student implements Serializable {
     private String username;
     @Embedded
     private Person person;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "class_id"))
     private List<ClassOffered> classOfferedSet;
 

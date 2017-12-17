@@ -24,10 +24,10 @@ public class Survey implements Serializable {
     @Enumerated
     private SurveyStatus status;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "survey_question", joinColumns = @JoinColumn(name = "survey_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
     private List<Question> questions;
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SurveyAnswer> answers;
 
     @ManyToOne

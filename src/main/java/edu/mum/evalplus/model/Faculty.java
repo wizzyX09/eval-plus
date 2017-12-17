@@ -19,7 +19,7 @@ public class Faculty implements Serializable {
      private String username;
      @Embedded
      private Person person;
-    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER)
     private List<ClassOffered> classOfferedSet;
 
      public Faculty() {

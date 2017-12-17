@@ -31,39 +31,15 @@
 <div class="container">
     <ul>
         <li>
-            Welcome,${pageContext.request.userPrincipal.name}
+            Survey available
             <ul>
-                <li><a href="${contextPath}/userProfile">Profile</a></li>
-                <li><a onclick="document.forms['logoutForm'].submit()">Logout</a></li>
+                <c:forEach var="survey" items="${surveys}">
+                    <li>
+                        <a href="${contextPath}/takeSurvey/${survey.id}">${survey.classOffered.name}${survey.classOffered.id}</a>
+                    </li>
+                </c:forEach>
             </ul>
         </li>
-    </ul>
-    <ul>
-        <li>
-            Account
-            <ul>
-                <li><a href="${contextPath}/generateAccount">Generate account</a></li>
-                <li><a href="${contextPath}/manageAccount">Manage</a></li>
-            </ul>
-        </li>
-
-        <li>
-            Survey
-            <ul>
-                <li><a href="${contextPath}/newSurvey">New</a></li>
-                <li><a href="${contextPath}/manageSurvey">Manage</a></li>
-                <li><a href="${contextPath}/takeSurvey">Take Survey</a></li>
-            </ul>
-        </li>
-
-        <li>
-            Questions
-            <ul>
-                <li><a href="${contextPath}/newQuestion">New</a></li>
-                <li><a href="${contextPath}/manageQuestion">Manage</a></li>
-            </ul>
-        </li>
-
     </ul>
 
 
