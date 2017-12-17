@@ -1,9 +1,10 @@
 package edu.mum.evalplus.model;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
- class Person {
+class Person implements Serializable {
 
     private String firstName;
     private String lastName;

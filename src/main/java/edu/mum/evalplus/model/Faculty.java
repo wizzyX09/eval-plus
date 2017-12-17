@@ -1,13 +1,14 @@
 package edu.mum.evalplus.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name="faculties")
-public class Faculty {
+public class Faculty implements Serializable {
 
      @Id
      @GeneratedValue
@@ -19,17 +20,17 @@ public class Faculty {
      @Embedded
      private Person person;
     @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
-     private Set<ClassOffered> classOfferedSet;
+    private List<ClassOffered> classOfferedSet;
 
      public Faculty() {
           this.person=new Person();
-          classOfferedSet=new HashSet<>();
+         classOfferedSet = new ArrayList<>();
      }
 
      public Faculty(String firstName, String lastName, Gender gender, String email, String username) {
           this.username = username;
           this.person=new Person(firstName,lastName,gender,email);
-         classOfferedSet=new HashSet<>();
+         classOfferedSet = new ArrayList<>();
 
      }
 
@@ -70,8 +71,8 @@ public class Faculty {
           return person;
      }
 
-    public Set<ClassOffered> getClassOfferedSet() {
-        return Collections.unmodifiableSet(classOfferedSet);
+    public List<ClassOffered> getClassOfferedSet() {
+        return Collections.unmodifiableList(classOfferedSet);
     }
 
     @Override

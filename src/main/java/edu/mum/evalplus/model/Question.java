@@ -1,10 +1,11 @@
 package edu.mum.evalplus.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="questions")
-public class Question {
+public class Question implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;

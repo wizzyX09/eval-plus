@@ -1,13 +1,14 @@
 package edu.mum.evalplus.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name="students")
-public class Student {
+public class Student implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
@@ -16,17 +17,17 @@ public class Student {
     private Person person;
     @ManyToMany
     @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "class_id"))
-    private Set<ClassOffered> classOfferedSet;
+    private List<ClassOffered> classOfferedSet;
 
     public Student() {
         this.person=new Person();
-        this.classOfferedSet=new HashSet<>();
+        this.classOfferedSet = new ArrayList<>();
     }
 
     public Student(String firstName, String lastName, Gender gender, String email,String username) {
         this.username = username;
         this.person=new Person(firstName,lastName,gender,email);
-        this.classOfferedSet=new HashSet<>();
+        this.classOfferedSet = new ArrayList<>();
     }
 
     public void addClass(ClassOffered classOffered){
@@ -61,9 +62,8 @@ public class Student {
     }
 
 
-
-    public Set<ClassOffered> getClassOfferedSet() {
-        return Collections.unmodifiableSet(classOfferedSet);
+    public List<ClassOffered> getClassOfferedSet() {
+        return Collections.unmodifiableList(classOfferedSet);
     }
 
     @Override

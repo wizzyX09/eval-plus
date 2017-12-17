@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
@@ -29,7 +30,6 @@
 <body>
 
 <div class="container">
-
     <form:form method="POST" action="${contextPath}/newSurvey" modelAttribute="surveyForm" class="form-signin">
        Please fill the form for the new Survey<br/>
         <fieldset>
@@ -52,6 +52,7 @@
                 <form:errors path="status"></form:errors>
             </div>
         </spring:bind>
+        </fieldset>
 
        <spring:bind path="resubmissionAllowed">
             <div class="${status.error ? 'has-error' : ''}">
@@ -67,14 +68,8 @@
             <legend>Choose questions</legend>
         <form:checkboxes items="${questions}" path="questions" itemLabel="question" itemValue="id" delimiter="<br"/>
         </fieldset>
-
         <fieldset>
-            <legend>Select a class</legend>
-
-            <c:forEach var="lecture" items="${lectures}">
-                <c:out value="${lecture.name}"></c:out>
-            </c:forEach>
-
+            <form:select multiple="false" path="classOffered" items="${lectures}" itemLabel="name" itemValue="id"/>
         </fieldset>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form:form>

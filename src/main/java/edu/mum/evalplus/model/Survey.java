@@ -1,14 +1,16 @@
 package edu.mum.evalplus.model;
 
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name="surveys")
-public class Survey {
+public class Survey implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
@@ -24,16 +26,17 @@ public class Survey {
 
     @ManyToMany
     @JoinTable(name = "survey_question", joinColumns = @JoinColumn(name = "survey_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
-    private Set<Question> questions;
-    @OneToMany(mappedBy = "survey")
-    private Set<SurveyAnswer> answers;
+    private List<Question> questions;
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
+    private List<SurveyAnswer> answers;
+
     @ManyToOne
     @JoinColumn(name="class_id")
     private ClassOffered classOffered;
 
     public Survey() {
-        this.questions = new HashSet<>();
-        this.answers = new HashSet<>();
+        this.questions = new ArrayList<>();
+        this.answers = new ArrayList<>();
         this.classOffered = new ClassOffered();
     }
 
@@ -43,8 +46,8 @@ public class Survey {
         this.endDate = endDate;
         this.resubmissionAllowed = resubmissionAllowed;
         this.status = status;
-        this.questions = new HashSet<>();
-        this.answers = new HashSet<>();
+        this.questions = new ArrayList<>();
+        this.answers = new ArrayList<>();
         this.classOffered = classOffered;
     }
 
@@ -119,14 +122,13 @@ public class Survey {
         this.status = status;
     }
 
-    public Set<Question> getQuestions() {
-        return Collections.unmodifiableSet(questions);
+    public List<Question> getQuestions() {
+        return Collections.unmodifiableList(questions);
     }
 
 
-
-    public Set<SurveyAnswer> getAnswers() {
-        return Collections.unmodifiableSet(answers);
+    public List<SurveyAnswer> getAnswers() {
+        return Collections.unmodifiableList(answers);
     }
 
 
@@ -138,18 +140,5 @@ public class Survey {
         this.classOffered = classOffered;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Survey survey = (Survey) o;
-
-        return getId().equals(survey.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
-    }
 }

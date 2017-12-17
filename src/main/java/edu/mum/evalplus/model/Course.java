@@ -1,13 +1,15 @@
 package edu.mum.evalplus.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name="courses")
-public class Course {
+public class Course implements Serializable {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -16,12 +18,17 @@ public class Course {
 
     private String code;
 
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
+    private List<ClassOffered> classOfferedList;
+
     public Course() {
+        classOfferedList = new ArrayList<>();
     }
 
     public Course(String name, String code) {
         this.name = name;
         this.code = code;
+        classOfferedList = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -48,18 +55,9 @@ public class Course {
         this.code = code;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Course course = (Course) o;
-
-        return getId().equals(course.getId());
+    public List<ClassOffered> getClassOfferedList() {
+        return Collections.unmodifiableList(classOfferedList);
     }
 
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
-    }
+
 }

@@ -1,13 +1,14 @@
 package edu.mum.evalplus.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name="classes_offered")
-public class ClassOffered {
+public class ClassOffered implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
@@ -15,21 +16,21 @@ public class ClassOffered {
     private String name;
 
     @ManyToMany(mappedBy = "classOfferedSet", fetch = FetchType.LAZY)
-    private Set<Student> students;
+    private List<Student> students;
 
     @OneToMany(mappedBy = "classOffered", fetch = FetchType.LAZY)
-    private Set<Survey> surveys;
+    private List<Survey> surveys;
 
     @ManyToOne
     @JoinColumn(name="faculty_id")
     private Faculty faculty;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Course course;
 
     public ClassOffered() {
-        this.students=new HashSet<>();
-        this.surveys=new HashSet<>();
+        this.students = new ArrayList<>();
+        this.surveys = new ArrayList<>();
         this.course=new Course();
         this.faculty=new Faculty();
     }
@@ -38,8 +39,8 @@ public class ClassOffered {
         this.name = name;
         this.faculty = faculty;
         this.course = course;
-        surveys=new HashSet<>();
-        students=new HashSet<>();
+        this.students = new ArrayList<>();
+        this.surveys = new ArrayList<>();
     }
 
     public void addStudent(Student student){
@@ -78,12 +79,12 @@ public class ClassOffered {
         this.name = name;
     }
 
-    public Set<Student> getStudents() {
-        return Collections.unmodifiableSet(students);
+    public List<Student> getStudents() {
+        return Collections.unmodifiableList(students);
     }
 
-    public Set<Survey> getSurveys() {
-        return Collections.unmodifiableSet(surveys);
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     public Faculty getFaculty() {
@@ -110,18 +111,13 @@ public class ClassOffered {
         this.active = active;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ClassOffered that = (ClassOffered) o;
-
-        return getId().equals(that.getId());
+    public List<Survey> getSurveys() {
+        return Collections.unmodifiableList(surveys);
     }
 
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
+    public void setSurveys(List<Survey> surveys) {
+        this.surveys = surveys;
     }
+
+
 }
