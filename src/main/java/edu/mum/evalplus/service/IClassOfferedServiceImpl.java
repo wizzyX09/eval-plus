@@ -4,8 +4,6 @@ import edu.mum.evalplus.model.ClassOffered;
 import edu.mum.evalplus.repository.ClassOfferedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +14,6 @@ public class IClassOfferedServiceImpl implements  IClassOfferedService{
     private ClassOfferedRepository ClassOfferedRepository;
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
     public void save(ClassOffered classOffered) {
         ClassOfferedRepository.save(classOffered);
     }
