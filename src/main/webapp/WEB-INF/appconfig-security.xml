@@ -35,4 +35,5 @@
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
         <beans:constructor-arg name="strength" value="11"/>
     </beans:bean>
+    <beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
 </beans:beans>
