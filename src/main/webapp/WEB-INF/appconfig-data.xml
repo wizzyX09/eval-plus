@@ -11,6 +11,44 @@
     http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
+    <!-- Email beans configuration-->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="587"/>
+        <property name="username" value="wisletmichel@gmail.com"/>
+        <property name="password" value="zcbmnvx1992"/>
+
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+
+    </bean>
+
+    <bean id="myMailSender" class="edu.mum.evalplus.util.MailMail">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="simpleMailMessage" ref="customeMailMessage"/>
+    </bean>
+
+    <bean id="customeMailMessage"
+          class="org.springframework.mail.SimpleMailMessage">
+
+        <property name="from" value="wisletmichel@gmail.com"/>
+        <property name="to" value="wmichel@mum.edu"/>
+        <property name="subject" value="Testing Subject"/>
+        <property name="text">
+            <value>
+                <![CDATA[
+				Dear %s,
+				Mail Content : %s
+			]]>
+            </value>
+        </property>
+    </bean>
+
+
     <!-- Configure the data source bean -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>

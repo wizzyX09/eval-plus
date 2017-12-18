@@ -2,10 +2,7 @@ package edu.mum.evalplus.web;
 
 
 import edu.mum.evalplus.model.*;
-import edu.mum.evalplus.service.IClassOfferedService;
-import edu.mum.evalplus.service.IQuestionService;
-import edu.mum.evalplus.service.IStudentService;
-import edu.mum.evalplus.service.ISurveyService;
+import edu.mum.evalplus.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +25,8 @@ public class SurveyController {
     private IClassOfferedService classOfferedService;
     @Autowired
     private IStudentService studentService;
+    @Autowired
+    private IEmailService emailService;
 
 
     @RequestMapping(value = "/newSurvey", method = RequestMethod.GET)
@@ -51,6 +50,7 @@ public class SurveyController {
             survey.addQuestion(question);
         }
         surveyService.save(survey);
+        emailService.sendMail("ebayarkhuu@mum.edu", "Survey", "A new survey is created");
         return "redirect:/manageSurvey";
     }
 
