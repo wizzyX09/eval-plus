@@ -7,12 +7,20 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <http auto-config="true">
+    <http auto-config="true" create-session="always">
         <intercept-url pattern="/" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/home" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/welcome" access="hasRole('ROLE_USER')"/>
         <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login?error" username-parameter="username" password-parameter="password"/>
+        <logout logout-url="/logout"/>
         <logout logout-success-url="/login?logout" />
+        <session-management>
+            <concurrency-control max-sessions="1"/>
+        </session-management>
+        <session-management>
+            <concurrency-control expired-url="/login"/>
+        </session-management>
+        <session-management invalid-session-url="/login"/>
     </http>
 
     <authentication-manager alias="authenticationManager">

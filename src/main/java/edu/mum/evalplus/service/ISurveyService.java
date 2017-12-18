@@ -11,4 +11,5 @@ public interface ISurveyService {
     void delete(Integer id );
 
     List<Survey> findStudentSurvey(String username);
+
 }

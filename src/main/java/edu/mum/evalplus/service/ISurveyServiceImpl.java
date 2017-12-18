@@ -4,12 +4,9 @@ import edu.mum.evalplus.model.ClassOffered;
 import edu.mum.evalplus.model.Student;
 import edu.mum.evalplus.model.Survey;
 import edu.mum.evalplus.model.SurveyStatus;
-import edu.mum.evalplus.repository.StudentRepository;
 import edu.mum.evalplus.repository.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +19,8 @@ public class ISurveyServiceImpl implements  ISurveyService{
     @Autowired
     private SurveyRepository surveyRepository;
     @Autowired
-    private StudentRepository studentRepository;
+    private IStudentService studentService;
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
     public void save(Survey survey) {
         surveyRepository.save(survey);
     }
@@ -46,7 +42,7 @@ public class ISurveyServiceImpl implements  ISurveyService{
 
     @Override
     public List<Survey> findStudentSurvey(String username) {
-        Student student = studentRepository.findByUsername(username);
+        Student student = studentService.findByUsername(username);
         List<Survey> surveys = new ArrayList<>();
         if (student == null)
             return surveys;
@@ -63,5 +59,6 @@ public class ISurveyServiceImpl implements  ISurveyService{
         };
         return function.apply(lectures);
     }
+
 
 }

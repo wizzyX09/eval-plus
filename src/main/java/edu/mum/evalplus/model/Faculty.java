@@ -75,18 +75,5 @@ public class Faculty implements Serializable {
         return Collections.unmodifiableList(classOfferedSet);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Faculty faculty = (Faculty) o;
-
-        return getId().equals(faculty.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
-    }
 }

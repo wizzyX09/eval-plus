@@ -3,10 +3,7 @@ package edu.mum.evalplus.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name="surveys")
@@ -16,17 +13,14 @@ public class Survey implements Serializable {
     private Integer id;
     @Temporal(TemporalType.DATE)
     private Date createdDate;
-    @Temporal(TemporalType.DATE)
-    private Date openDate;
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
-    private Boolean resubmissionAllowed;
     @Enumerated
     private SurveyStatus status;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "survey_question", joinColumns = @JoinColumn(name = "survey_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
-    private List<Question> questions;
+    private Set<Question> questions;
+
+
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SurveyAnswer> answers;
 
@@ -35,18 +29,15 @@ public class Survey implements Serializable {
     private ClassOffered classOffered;
 
     public Survey() {
-        this.questions = new ArrayList<>();
+        this.questions = new HashSet<>();
         this.answers = new ArrayList<>();
         this.classOffered = new ClassOffered();
     }
 
-    public Survey(Date createdDate, Date openDate, Date endDate, Boolean resubmissionAllowed, SurveyStatus status, ClassOffered classOffered) {
+    public Survey(Date createdDate, SurveyStatus status, ClassOffered classOffered) {
         this.createdDate = createdDate;
-        this.openDate = openDate;
-        this.endDate = endDate;
-        this.resubmissionAllowed = resubmissionAllowed;
         this.status = status;
-        this.questions = new ArrayList<>();
+        this.questions = new HashSet<>();
         this.answers = new ArrayList<>();
         this.classOffered = classOffered;
     }
@@ -90,30 +81,6 @@ public class Survey implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Date getOpenDate() {
-        return openDate;
-    }
-
-    public void setOpenDate(Date openDate) {
-        this.openDate = openDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Boolean getResubmissionAllowed() {
-        return resubmissionAllowed;
-    }
-
-    public void setResubmissionAllowed(Boolean resubmissionAllowed) {
-        this.resubmissionAllowed = resubmissionAllowed;
-    }
-
     public SurveyStatus getStatus() {
         return status;
     }
@@ -122,8 +89,8 @@ public class Survey implements Serializable {
         this.status = status;
     }
 
-    public List<Question> getQuestions() {
-        return Collections.unmodifiableList(questions);
+    public Set<Question> getQuestions() {
+        return Collections.unmodifiableSet(questions);
     }
 
 
@@ -141,4 +108,18 @@ public class Survey implements Serializable {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Survey survey = (Survey) o;
+
+        return getId().equals(survey.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

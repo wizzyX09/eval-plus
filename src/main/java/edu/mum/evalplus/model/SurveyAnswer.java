@@ -10,7 +10,7 @@ public class SurveyAnswer implements Serializable {
     @GeneratedValue
     private Integer id;
     private String answer;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "question_id")
     private Question question;
     @ManyToOne
@@ -73,18 +73,5 @@ public class SurveyAnswer implements Serializable {
         this.student = student;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        SurveyAnswer that = (SurveyAnswer) o;
-
-        return getId().equals(that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
-    }
 }
