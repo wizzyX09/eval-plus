@@ -2,6 +2,7 @@ package edu.mum.evalplus.web;
 
 
 import edu.mum.evalplus.model.User;
+import edu.mum.evalplus.service.IStudentService;
 import edu.mum.evalplus.service.SecurityService;
 import edu.mum.evalplus.service.UserService;
 import edu.mum.evalplus.validator.UserValidator;
@@ -24,14 +25,16 @@ public class UserAccountController {
     @Autowired
     private UserValidator userValidator;
 
+    @Autowired
+    private IStudentService studentService;
+
     @RequestMapping(value = "/generateAccount", method = RequestMethod.GET)
     public String addAccount(Model model) {
-        model.addAttribute("userForm", new User());
-
-        return "generateAccount";
+        model.addAttribute("students",studentService.findAllByUsername("eb") );
+        return "generateStudentAccount";
     }
 
-    @RequestMapping(value = "/generateAccount", method = RequestMethod.POST)
+    @RequestMapping(value = "/generateStundentAccount", method = RequestMethod.POST)
     public String addAccount(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
 
         userService.save(userForm);

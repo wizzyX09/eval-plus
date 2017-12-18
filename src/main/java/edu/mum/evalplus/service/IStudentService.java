@@ -14,4 +14,6 @@ public interface IStudentService {
     void delete(Integer id);
 
     Student findByUsername(String username);
+
+    List<Student> findAllByUsername(String username);
 }

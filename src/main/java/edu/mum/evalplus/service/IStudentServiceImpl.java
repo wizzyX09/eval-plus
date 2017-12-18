@@ -5,6 +5,7 @@ import edu.mum.evalplus.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,5 +39,12 @@ public class IStudentServiceImpl implements IStudentService {
     @Override
     public Student findByUsername(String username) {
         return studentRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<Student> findAllByUsername(String username) {
+        List<Student> list = new ArrayList<>();
+        list.addAll(studentRepository.findStudentWithNoAccount(username));
+        return list;
     }
 }
