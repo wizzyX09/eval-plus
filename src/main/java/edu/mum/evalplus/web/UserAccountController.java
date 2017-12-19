@@ -3,6 +3,7 @@ package edu.mum.evalplus.web;
 
 import edu.mum.evalplus.model.Student;
 import edu.mum.evalplus.model.User;
+import edu.mum.evalplus.service.IEmailService;
 import edu.mum.evalplus.service.IStudentService;
 import edu.mum.evalplus.service.SecurityService;
 import edu.mum.evalplus.service.UserService;
@@ -33,6 +34,9 @@ public class UserAccountController {
     @Autowired
     private IStudentService studentService;
 
+    @Autowired
+    private IEmailService emailService;
+
     @RequestMapping(value = "/generateAccount", method = RequestMethod.GET)
     public String addAccount(Model model) {
         model.addAttribute("students",studentService.findStudentWithNoAccount() );
@@ -44,6 +48,10 @@ public class UserAccountController {
 
         Student student = studentService.find(studentId);
         student.setUsername(student.getFirstName().charAt(0) + student.getLastName());
+
+
+        emailService.sendMail(student.getEmail(), "Created an account",
+                "A new new account is created your username is : "+student.getUsername());
 
         studentService.save(student);
 
