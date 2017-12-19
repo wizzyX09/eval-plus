@@ -10,6 +10,6 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     Student findByUsername(String username);
 
-    @Query("from Student s where s.username =:username ")
-    List<Student> findStudentWithNoAccount(@Param("username") String username);
+    @Query("from Student s where s.username IS NULL ")
+    List<Student> findStudentWithNoAccount();
 }

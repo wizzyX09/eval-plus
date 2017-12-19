@@ -42,9 +42,11 @@ public class IStudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public List<Student> findAllByUsername(String username) {
+    public List<Student> findStudentWithNoAccount() {
         List<Student> list = new ArrayList<>();
-        list.addAll(studentRepository.findStudentWithNoAccount(username));
+        list.addAll(studentRepository.findStudentWithNoAccount());
         return list;
     }
+
+
 }

@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -175,12 +176,17 @@
                                 <c:forEach var="student" items="${students}">
                                     <tr>
                                         <td>${student.id}</td>
-                                        <td>${student.person.firstName}</td>
-                                        <td>${student.person.lastName}</td>
-                                        <td>${student.person.email}</td>
-                                        <td>${student.person.gender}</td>
+                                        <td>${student.firstName}</td>
+                                        <td>${student.lastName}</td>
+                                        <td>${student.email}</td>
+                                        <td>${student.gender}</td>
                                         <td>${student.username}</td>
-                                        <td><a href="../generateStudentAccount/${student.id}">Generate an account</a></td>
+                                        <td>
+                                            <a href="javascript:void(0)" onclick="$('#generate').submit()">Generate an account</a>
+                                            <form action="/generateStudentAccount/${student.id}" id="generate" method="post">
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                            </form>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
