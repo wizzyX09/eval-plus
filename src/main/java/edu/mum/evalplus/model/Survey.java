@@ -1,6 +1,9 @@
 package edu.mum.evalplus.model;
 
 
+import edu.mum.evalplus.util.McqQuestionReport;
+import edu.mum.evalplus.util.OpenedQuestionReport;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -22,7 +25,7 @@ public class Survey implements Serializable {
 
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<SurveyAnswer> answers;
+    private Set<SurveyAnswer> answers;
 
     @ManyToOne
     @JoinColumn(name="class_id")
@@ -30,7 +33,7 @@ public class Survey implements Serializable {
 
     public Survey() {
         this.questions = new HashSet<>();
-        this.answers = new ArrayList<>();
+        this.answers = new HashSet<>();
         this.classOffered = new ClassOffered();
     }
 
@@ -38,7 +41,7 @@ public class Survey implements Serializable {
         this.createdDate = createdDate;
         this.status = status;
         this.questions = new HashSet<>();
-        this.answers = new ArrayList<>();
+        this.answers = new HashSet<>();
         this.classOffered = classOffered;
     }
 
@@ -94,8 +97,8 @@ public class Survey implements Serializable {
     }
 
 
-    public List<SurveyAnswer> getAnswers() {
-        return Collections.unmodifiableList(answers);
+    public Set<SurveyAnswer> getAnswers() {
+        return Collections.unmodifiableSet(answers);
     }
 
 
@@ -122,4 +125,44 @@ public class Survey implements Serializable {
     public int hashCode() {
         return getId().hashCode();
     }
+
+    public List<Map<Question, McqQuestionReport>> prepareReport() {
+        List<Map<Question, McqQuestionReport>> reports = new ArrayList<>();
+        Map<Question, McqQuestionReport> mcqQuestionReports = new HashMap<>();
+        Map<Question, OpenedQuestionReport> openedQuestionReports = new HashMap<>();
+        System.out.println("LOG================:+" + this.getAnswers().size());
+        for (SurveyAnswer surveyAnswer : this.getAnswers()) {
+            if (surveyAnswer.getQuestion().getType().equals(QuestionType.MCQ)) {
+                if (mcqQuestionReports.containsKey(surveyAnswer.getQuestion())) {
+                    computeResponse(mcqQuestionReports.get(surveyAnswer.getQuestion()), surveyAnswer);
+                } else {
+                    System.out.println("====================" + surveyAnswer.getAnswer());
+                    McqQuestionReport mcqQuestionReport = new McqQuestionReport();
+                    mcqQuestionReport.setQuestion(surveyAnswer.getQuestion().getQuestion());
+                    mcqQuestionReports.put(surveyAnswer.getQuestion(), computeResponse(mcqQuestionReport, surveyAnswer));
+                }
+
+            } else {
+
+            }
+        }
+        reports.add(mcqQuestionReports);
+        // reports[1]=openedQuestionReports;
+        return reports;
+    }
+
+    private McqQuestionReport computeResponse(McqQuestionReport mcqQuestionReport, SurveyAnswer surveyAnswer) {
+        if (surveyAnswer.getAnswer().equalsIgnoreCase("CompletelyAgree"))
+            mcqQuestionReport.setCompletelyAgree(mcqQuestionReport.getCompletelyDisagree() + 1);
+        if (surveyAnswer.getAnswer().equalsIgnoreCase("Agree"))
+            mcqQuestionReport.setAgree(mcqQuestionReport.getAgree() + 1);
+        if (surveyAnswer.getAnswer().equalsIgnoreCase("Neutral"))
+            mcqQuestionReport.setNeutral(mcqQuestionReport.getNeutral() + 1);
+        if (surveyAnswer.getAnswer().equalsIgnoreCase("Disagree"))
+            mcqQuestionReport.setDisagree(mcqQuestionReport.getDisagree() + 1);
+        if (surveyAnswer.getAnswer().equalsIgnoreCase("CompletelyDisagree"))
+            mcqQuestionReport.setCompletelyDisagree(mcqQuestionReport.getCompletelyDisagree() + 1);
+        return mcqQuestionReport;
+    }
+
 }

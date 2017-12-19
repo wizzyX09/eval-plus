@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Available Survey</title>
+    <title>Survey report</title>
 
     <!-- DataTables CSS -->
     <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
@@ -162,25 +162,23 @@
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Firstname</th>
-                                    <th>Lastname</th>
-                                    <th>Email</th>
-                                    <th>Gender</th>
-                                    <th>Username</th>
-                                    <th></th>
+                                    <th>Question</th>
+                                    <th>Completely Agree</th>
+                                    <th>Agree</th>
+                                    <th>Neutral</th>
+                                    <th>Disagree</th>
+                                    <th>Completely Disagree</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="student" items="${students}">
+                                <c:forEach var="entry" items="${mcqReports}">
                                     <tr>
-                                        <td>${student.id}</td>
-                                        <td>${student.firstName}</td>
-                                        <td>${student.lastName}</td>
-                                        <td>${student.email}</td>
-                                        <td>${student.gender}</td>
-                                        <td>${student.username}</td>
-                                        <td><a href="../generateStudentAccount/${student.id}">Generate an account</a></td>
+                                        <td>${entry.value.question}</td>
+                                        <td>${entry.value.completelyAgree}</td>
+                                        <td>${entry.value.agree}</td>
+                                        <td>${entry.value.neutral}</td>
+                                        <td>${entry.value.disagree}</td>
+                                        <td>${entry.value.completelyDisagree}</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

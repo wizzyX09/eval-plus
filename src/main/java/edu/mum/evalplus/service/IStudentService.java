@@ -15,5 +15,7 @@ public interface IStudentService {
 
     Student findByUsername(String username);
 
-    List<Student> findAllByUsername(String username);
+    List<Student> findStudentWithNoAccount();
+
+    void generateStudentAccount(Integer studentId);
 }

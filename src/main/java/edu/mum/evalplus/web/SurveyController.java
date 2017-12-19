@@ -3,6 +3,7 @@ package edu.mum.evalplus.web;
 
 import edu.mum.evalplus.model.*;
 import edu.mum.evalplus.service.*;
+import edu.mum.evalplus.util.McqQuestionReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SurveyController {
@@ -70,10 +73,6 @@ public class SurveyController {
 
     @RequestMapping(value = "/takeSurvey/{id}", method = RequestMethod.GET)
     public String takeSurvey(@PathVariable("id") int id, Model model) {
-        for (Question quest : surveyService.find(id).getQuestions()) {
-            System.out.println("Question" + quest.getQuestion());
-        }
-
         model.addAttribute("survey", surveyService.find(id));
         return "takeSurvey";
     }
@@ -104,5 +103,19 @@ public class SurveyController {
         surveyService.save(survey);
         return "home";
     }
+
+
+    @RequestMapping(value = "/surveyDetails/{id}", method = RequestMethod.GET)
+    public String surveyDetails(@PathVariable("id") int id, Model model) {
+        Survey survey = surveyService.find(id);
+        List<Map<Question, McqQuestionReport>> reports = survey.prepareReport();
+        Map<Question, McqQuestionReport> mcqReports = reports.get(0);
+        mcqReports.forEach((key, quest) -> System.out.println(quest.getQuestion()));
+
+        model.addAttribute("mcqReports", mcqReports);
+        // model.addAttribute("openedReports", objects[1]);
+        return "surveyDetails";
+    }
+
 
 }

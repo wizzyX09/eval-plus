@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -30,16 +31,14 @@ public class UserAccountController {
 
     @RequestMapping(value = "/generateAccount", method = RequestMethod.GET)
     public String addAccount(Model model) {
-        model.addAttribute("students",studentService.findAllByUsername("eb") );
+        model.addAttribute("students", studentService.findStudentWithNoAccount());
         return "generateStudentAccount";
     }
 
-    @RequestMapping(value = "/generateStundentAccount", method = RequestMethod.POST)
-    public String addAccount(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-
-        userService.save(userForm);
-
-        return "redirect:/welcome";
+    @RequestMapping(value = "/generateStudentAccount/{id}", method = RequestMethod.GET)
+    public String addAccount(@PathVariable("id") Integer studentId) {
+        studentService.generateStudentAccount(studentId);
+        return "redirect:/generateAccount";
     }
 
     @RequestMapping(value = "/manageAccount", method = RequestMethod.GET)

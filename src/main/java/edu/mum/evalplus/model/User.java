@@ -1,11 +1,8 @@
 package edu.mum.evalplus.model;
 
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,6 +18,10 @@ public class User {
     private String passwordConfirm;
 
     private Set<Role> roles;
+
+    public User() {
+        roles = new HashSet<>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
