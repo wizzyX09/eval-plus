@@ -146,7 +146,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Dashboard</h1>
+                <h1 class="page-header">Survey report</h1>
             </div>
             <!-- /.col-lg-12 -->
 
@@ -154,7 +154,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Survey Available
+                        Reports on MCQ questions
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -171,16 +171,66 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="entry" items="${mcqReports}">
-                                    <tr>
-                                        <td>${entry.value.question}</td>
-                                        <td>${entry.value.completelyAgree}</td>
-                                        <td>${entry.value.agree}</td>
-                                        <td>${entry.value.neutral}</td>
-                                        <td>${entry.value.disagree}</td>
-                                        <td>${entry.value.completelyDisagree}</td>
-                                    </tr>
+                                <c:forEach var="entry" items="${reports}">
+                                    <c:choose>
+                                        <c:when test="${entry.value.questionType == 'MCQ'}">
+                                            <tr>
+                                                <td>${entry.value.question}</td>
+                                                <td>${entry.value.completelyAgree}</td>
+                                                <td>${entry.value.agree}</td>
+                                                <td>${entry.value.neutral}</td>
+                                                <td>${entry.value.disagree}</td>
+                                                <td>${entry.value.completelyDisagree}</td>
+                                            </tr>
+                                        </c:when>
+                                    </c:choose>
                                 </c:forEach>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-6 -->
+
+
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Reports for opened questions
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Answers</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="entry" items="${reports}">
+                                    <c:choose>
+                                        <c:when test="${entry.value.questionType == 'OPENED'}">
+                                            <tr>
+                                                <td>${entry.value.question}</td>
+                                            </tr>
+                                            <c:forEach var="answer" items="${entry.value.openedAnswers}" varStatus="i">
+                                                <tr>
+                                                    <td>${i.index}</td>
+                                                    <td>${answer}</td>
+                                                </tr>
+                                            </c:forEach>
+
+                                        </c:when>
+                                    </c:choose>
+                                </c:forEach>
+
                                 </tbody>
                             </table>
                         </div>

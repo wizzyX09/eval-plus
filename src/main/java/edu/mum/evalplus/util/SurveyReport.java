@@ -1,6 +1,11 @@
 package edu.mum.evalplus.util;
 
-public class McqQuestionReport {
+import edu.mum.evalplus.model.QuestionType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SurveyReport {
 
     private String question;
     private Integer completelyAgree;
@@ -8,13 +13,16 @@ public class McqQuestionReport {
     private Integer neutral;
     private Integer disagree;
     private Integer completelyDisagree;
+    private List<String> openedAnswers;
+    private QuestionType questionType;
 
-    public McqQuestionReport() {
+    public SurveyReport() {
         this.completelyAgree = 0;
         this.agree = 0;
         this.neutral = 0;
         this.disagree = 0;
         this.completelyDisagree = 0;
+        openedAnswers = new ArrayList<>();
     }
 
     public String getQuestion() {
@@ -63,5 +71,21 @@ public class McqQuestionReport {
 
     public void setCompletelyDisagree(Integer completelyDisagree) {
         this.completelyDisagree = completelyDisagree;
+    }
+
+    public List<String> getOpenedAnswers() {
+        return openedAnswers;
+    }
+
+    public void setOpenedAnswers(List<String> openedAnswers) {
+        this.openedAnswers = openedAnswers;
+    }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(QuestionType questionType) {
+        this.questionType = questionType;
     }
 }

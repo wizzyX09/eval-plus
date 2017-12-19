@@ -1,15 +1,15 @@
 package edu.mum.evalplus.model;
 
 
-import edu.mum.evalplus.util.McqQuestionReport;
-import edu.mum.evalplus.util.OpenedQuestionReport;
+import edu.mum.evalplus.util.SurveyReport;
 
 import javax.persistence.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.*;
 
 @Entity
-@Table(name="surveys")
+@Table(name = "surveys")
 public class Survey implements Serializable {
     @Id
     @GeneratedValue
@@ -28,7 +28,7 @@ public class Survey implements Serializable {
     private Set<SurveyAnswer> answers;
 
     @ManyToOne
-    @JoinColumn(name="class_id")
+    @JoinColumn(name = "class_id")
     private ClassOffered classOffered;
 
     public Survey() {
@@ -45,23 +45,25 @@ public class Survey implements Serializable {
         this.classOffered = classOffered;
     }
 
-   public void addQuestion(Question question){
+    public void addQuestion(Question question) {
         questions.add(question);
-   }
-   public Question removeQuestion(Question question){
-      if(questions.remove(question)){
-          return question;
-      }
-      return null;
-   }
+    }
 
-    public void addAnswer(SurveyAnswer answer){
-       answer.setSurvey(this);
+    public Question removeQuestion(Question question) {
+        if (questions.remove(question)) {
+            return question;
+        }
+        return null;
+    }
+
+    public void addAnswer(SurveyAnswer answer) {
+        answer.setSurvey(this);
         answers.add(answer);
     }
-    public SurveyAnswer removeAnswer(SurveyAnswer answer){
 
-        if(answers.remove(answer)){
+    public SurveyAnswer removeAnswer(SurveyAnswer answer) {
+
+        if (answers.remove(answer)) {
             answer.setSurvey(null);
             return answer;
         }
@@ -126,32 +128,38 @@ public class Survey implements Serializable {
         return getId().hashCode();
     }
 
-    public List<Map<Question, McqQuestionReport>> prepareReport() {
-        List<Map<Question, McqQuestionReport>> reports = new ArrayList<>();
-        Map<Question, McqQuestionReport> mcqQuestionReports = new HashMap<>();
-        Map<Question, OpenedQuestionReport> openedQuestionReports = new HashMap<>();
-        System.out.println("LOG================:+" + this.getAnswers().size());
+    public Map<Question, SurveyReport> prepareReport() {
+        Map<Question, SurveyReport> reports = new HashMap<>();
         for (SurveyAnswer surveyAnswer : this.getAnswers()) {
             if (surveyAnswer.getQuestion().getType().equals(QuestionType.MCQ)) {
-                if (mcqQuestionReports.containsKey(surveyAnswer.getQuestion())) {
-                    computeResponse(mcqQuestionReports.get(surveyAnswer.getQuestion()), surveyAnswer);
+                if (reports.containsKey(surveyAnswer.getQuestion())) {
+                    computeResponse(reports.get(surveyAnswer.getQuestion()), surveyAnswer);
                 } else {
-                    System.out.println("====================" + surveyAnswer.getAnswer());
-                    McqQuestionReport mcqQuestionReport = new McqQuestionReport();
+                    SurveyReport mcqQuestionReport = new SurveyReport();
+                    mcqQuestionReport.setQuestionType(QuestionType.MCQ);
                     mcqQuestionReport.setQuestion(surveyAnswer.getQuestion().getQuestion());
-                    mcqQuestionReports.put(surveyAnswer.getQuestion(), computeResponse(mcqQuestionReport, surveyAnswer));
+                    reports.put(surveyAnswer.getQuestion(), computeResponse(mcqQuestionReport, surveyAnswer));
                 }
 
             } else {
 
+                if (reports.containsKey(surveyAnswer.getQuestion())) {
+                    reports.get(surveyAnswer.getQuestion()).getOpenedAnswers().add(surveyAnswer.getAnswer());
+                } else {
+                    SurveyReport report = new SurveyReport();
+                    report.setQuestionType(QuestionType.OPENED);
+                    report.setQuestion(surveyAnswer.getQuestion().getQuestion());
+                    report.getOpenedAnswers().add(surveyAnswer.getAnswer());
+                    reports.put(surveyAnswer.getQuestion(), report);
+                }
+
+
             }
         }
-        reports.add(mcqQuestionReports);
-        // reports[1]=openedQuestionReports;
         return reports;
     }
 
-    private McqQuestionReport computeResponse(McqQuestionReport mcqQuestionReport, SurveyAnswer surveyAnswer) {
+    private SurveyReport computeResponse(SurveyReport mcqQuestionReport, SurveyAnswer surveyAnswer) {
         if (surveyAnswer.getAnswer().equalsIgnoreCase("CompletelyAgree"))
             mcqQuestionReport.setCompletelyAgree(mcqQuestionReport.getCompletelyDisagree() + 1);
         if (surveyAnswer.getAnswer().equalsIgnoreCase("Agree"))
@@ -165,4 +173,39 @@ public class Survey implements Serializable {
         return mcqQuestionReport;
     }
 
+    public Survey prepareAnswers(HttpServletRequest request, Student student) {
+
+        for (Question question : this.getQuestions()) {
+            //Retreive param from view
+            String answer = request.getParameter(question.getId() + "");
+
+            //SurveyAnswer preparation
+            SurveyAnswer surveyAnswer = new SurveyAnswer();
+            surveyAnswer.setAnswer(answer);
+            surveyAnswer.setQuestion(question);
+            surveyAnswer.setStudent(student);
+            //Adding SurveyAnswer into Survey
+            this.addAnswer(surveyAnswer);
+
+        }
+        return this;
+    }
+
+    public Survey bindParam(HttpServletRequest request) {
+        String[] questionsId = request.getParameterValues("questions");
+        String classOfferedId = request.getParameter("classOffered");
+        String status = request.getParameter("status");
+        ClassOffered classOffered = new ClassOffered();
+        Survey survey = new Survey();
+        classOffered.setId(Integer.parseInt(classOfferedId));
+        survey.setClassOffered(classOffered);
+        survey.setStatus(status.equals(SurveyStatus.OPENED) ? SurveyStatus.OPENED : SurveyStatus.CLOSED);
+        survey.setCreatedDate(new Date());
+        for (int i = 0; i < questionsId.length; i++) {
+            Question question = new Question();
+            question.setId(Integer.parseInt(questionsId[i]));
+            survey.addQuestion(question);
+        }
+        return survey;
+    }
 }

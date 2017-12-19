@@ -169,33 +169,39 @@
                                                 <label>${quest.question}</label>
                                                 <div class="form-group">
                                                     <label class="radio-inline">
-                                                        <input required name="quest${quest.id}" type="radio"
+                                                        <input required name="${quest.id}" type="radio"
                                                                id="optionsRadiosInline1"
-                                                               value="${quest.id},CompletelyAgree" checked>Completely
+                                                               value="CompletelyAgree" checked>Completely
                                                         Agree
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="quest${quest.id}"
-                                                               id="optionsRadiosInline2" value="${quest.id},Agree">Agree
+                                                        <input type="radio" name="${quest.id}"
+                                                               id="optionsRadiosInline2" value="Agree">Agree
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="quest${quest.id}"
-                                                               id="optionsRadiosInline3" value="${quest.id},Neutral">Neutral
+                                                        <input type="radio" name="${quest.id}"
+                                                               id="optionsRadiosInline3" value="Neutral">Neutral
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="quest${quest.id}"
-                                                               id="optionsRadiosInline4" value="${quest.id},Disagree">Disagree
+                                                        <input type="radio" name="${quest.id}"
+                                                               id="optionsRadiosInline4" value="Disagree">Disagree
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="quest${quest.id}"
+                                                        <input type="radio" name="${quest.id}"
                                                                id="optionsRadiosInline5"
-                                                               value="${quest.id},CompletelyDisagree">Completely
+                                                               value="CompletelyDisagree">Completely
                                                         Disagree
                                                     </label>
                                                 </div>
 
                                             </c:when>
-
+                                            <c:otherwise>
+                                                <div class="form-group">
+                                                    <label>${quest.question}</label>
+                                                    <textarea name="${quest.id}" class="form-control"
+                                                              rows="3"></textarea>
+                                                </div>
+                                            </c:otherwise>
 
                                         </c:choose>
                                     </c:forEach>
