@@ -7,11 +7,15 @@ import edu.mum.evalplus.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
+@Transactional
 public class IStudentServiceImpl implements IStudentService {
 
 
@@ -25,6 +29,7 @@ public class IStudentServiceImpl implements IStudentService {
     private BCryptPasswordEncoder encoder;
     @Autowired
     private IEmailService emailService;
+    private final String DEFAULT_PASSWORD = "$2a$11$X2.qF1gFgCbpTa1eAo4gO.kAKaVRvBwl/26Ckk2Ph0S2S6tdxKs/O";
 
 
     @Override
@@ -64,13 +69,20 @@ public class IStudentServiceImpl implements IStudentService {
         Student student = studentRepository.findOne(studentId);
         User user = new User();
         Role role = roleService.findByName("ROLE_STUDENT");
-        user.getRoles().add(role);
-        user.setUsername(student.getFirstName());
-        user.setPassword(encoder.encode(student.getFirstName()));
-        student.setUsername(student.getFirstName());
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+        user.setUsername(student.getFirstName().toLowerCase());
+        user.setPassword(DEFAULT_PASSWORD);
+        student.setUsername(student.getFirstName().toLowerCase());
         studentRepository.save(student);
+        for (Role rol : user.getRoles()) {
+            if (!role.getName().equals("ROLE_STUDENT")) {
+                user.getRoles().remove(rol);
+            }
+        }
         userService.save(user);
         emailService.sendMail(student.getEmail(), "Survey System credentials", "Welcome to Eval Plus!!  " +
-                "We  created an account for you: username: " + user.getUsername() + " and password: " + user.getUsername());
+                "We  created an account for you: username: " + user.getUsername().toLowerCase() + " and password:wisleo ");
     }
 }

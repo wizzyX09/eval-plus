@@ -76,7 +76,7 @@
                                         <div class="form-group ${error != null ? 'has-error' : ''}">
                                             <label>Description</label>
                                             <span>${message}</span>
-                                            <input path="question" name="question" class="form-control"
+                                            <input path="question" required="true" name="question" class="form-control"
                                                    placeholder="Enter question" value="${question.question}">
                                         </div>
 
@@ -85,7 +85,7 @@
                                             <span>${message}</span>
                                             <form:select path="type" name="questionType" class="form-control">
                                                 <option value="MCQ">Multiple Choice</option>
-                                                <option value="OPENED">Open</option>
+                                                <option value="OPENED">Opened</option>
                                             </form:select>
                                         </div>
 
@@ -98,6 +98,20 @@
                                             <label class="radio-inline">
                                                 <form:radiobutton path="enabled" name="status" id="optionsRadiosInline1"
                                                                   value="0"/>Disabled
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group ${error != null ? 'has-error' : ''}">
+                                            <label>Required?</label>
+                                            <label class="radio-inline">
+                                                <form:radiobutton path="required" name="required"
+                                                                  id="optionsRadiosInline1"
+                                                                  value="1" checked="true"/>Required
+                                            </label>
+                                            <label class="radio-inline">
+                                                <form:radiobutton path="required" name="required"
+                                                                  id="optionsRadiosInline1"
+                                                                  value="0"/>Not required
                                             </label>
                                         </div>
 

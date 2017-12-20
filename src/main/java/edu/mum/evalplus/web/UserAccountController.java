@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class UserAccountController {
@@ -37,13 +38,13 @@ public class UserAccountController {
         return "generateStudentAccount";
     }
 
-    @RequestMapping(value = "/generateStudentAccount/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/generateStudentAccount/{id}", method = RequestMethod.POST)
     public String addAccount(@PathVariable("id") Integer studentId, Principal principal) {
         studentService.generateStudentAccount(studentId);
         return "redirect:/generateAccount";
     }
 
-    @RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
     public String manageAccount(Model model, Principal principal) {
         model.addAttribute("userForm", new User());
 
@@ -52,6 +53,26 @@ public class UserAccountController {
 
     @RequestMapping(value = "/manageAccount", method = RequestMethod.POST)
     public String manageAccount(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model, Principal principal) {
+        return "redirect:/welcome";
+    }*/
+
+    @RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
+    public String manageAccount(Model model) {
+        List<User> userList = userService.findAll();
+        model.addAttribute("users", userList);
+        return "manageAccount";
+    }
+
+    @RequestMapping(value = "/manageAccount/{userId}", method = RequestMethod.GET)
+    public String manageAccountEdit(@PathVariable Long userId, Model model) {
+        User user = userService.findById(userId);
+        model.addAttribute("userForm", user);
+        return "manageAccountEdit";
+    }
+
+    @RequestMapping(value = "/manageAccount", method = RequestMethod.POST)
+    public String manageAccountEdit(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+        userService.save(userForm);
         return "redirect:/welcome";
     }
 

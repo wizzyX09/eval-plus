@@ -9,4 +9,6 @@ public interface IQuestionService {
     List<Question> findAll();
     Question find(Integer id);
     void delete(Integer id);
+
+    List<Question> findQuestionByEnabled(Boolean enabled);
 }

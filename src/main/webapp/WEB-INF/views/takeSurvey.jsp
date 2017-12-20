@@ -78,9 +78,10 @@
                                                 <label>${quest.question}</label>
                                                 <div class="form-group">
                                                     <label class="radio-inline">
-                                                        <input required name="${quest.id}" type="radio"
+                                                        <input required="${question.required}" name="${quest.id}"
+                                                               type="radio"
                                                                id="optionsRadiosInline1"
-                                                               value="CompletelyAgree" checked>Completely
+                                                               value="CompletelyAgree">Completely
                                                         Agree
                                                     </label>
                                                     <label class="radio-inline">
@@ -107,7 +108,8 @@
                                             <c:otherwise>
                                                 <div class="form-group">
                                                     <label>${quest.question}</label>
-                                                    <textarea name="${quest.id}" class="form-control"
+                                                    <textarea required="${question.required}" name="${quest.id}"
+                                                              class="form-control"
                                                               rows="3"></textarea>
                                                 </div>
                                             </c:otherwise>

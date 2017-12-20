@@ -17,7 +17,7 @@ public class Student implements Serializable {
     private String lastName;
     private Gender gender;
     private String email;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "student_class", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "class_id"))
     private List<ClassOffered> classOfferedSet;
 
@@ -91,5 +91,20 @@ public class Student implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        return getId() != null ? getId().equals(student.getId()) : student.getId() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
     }
 }

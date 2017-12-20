@@ -13,6 +13,7 @@ public class Question implements Serializable {
     @Enumerated
     private QuestionType type;
     private Boolean enabled;
+    private Boolean required;
 
     public Question() {
     }
@@ -68,5 +69,13 @@ public class Question implements Serializable {
     @Override
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
+    }
+
+    public Boolean getRequired() {
+        return required;
+    }
+
+    public void setRequired(Boolean required) {
+        this.required = required;
     }
 }

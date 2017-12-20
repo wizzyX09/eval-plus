@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class DefaultController {
 
@@ -18,4 +20,11 @@ public class DefaultController {
     public String welcome() {
         return "403";
     }
+
+    @RequestMapping("/logout")
+    public String welcome(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
+
 }

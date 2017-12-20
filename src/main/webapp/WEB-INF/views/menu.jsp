@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Eval Plus</a>
+        <a class="navbar-brand" href="../welcome">Eval Plus</a>
     </div>
     <!-- /.navbar-header -->
 
@@ -64,6 +64,9 @@
                             <li>
                                 <a href="../manageAccount"><spring:message code="account.manage" text="Manage"/></a>
                             </li>
+                            <li>
+                                <a href="../registration"><spring:message code="account.registration" text=""/></a>
+                            </li>
                         </ul>
                     </li>
                 </sec:authorize>
@@ -74,7 +77,7 @@
                                                                                                      text="Survey"/><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <sec:authorize access="hasRole('ROLE_FACULTY')">
+                        <sec:authorize access="hasAnyRole('ROLE_FACULTY,ROLE_ADMIN')">
                             <li>
                                 <a href="../newSurvey"><spring:message code="menu.survey.new" text=""/></a>
                             </li>
@@ -91,7 +94,7 @@
                 </li>
 
                 <!-- menu -->
-                <sec:authorize access="hasRole('ROLE_FACULTY,ROLE_ADMIN')">
+                <sec:authorize access="hasAnyRole('ROLE_FACULTY,ROLE_ADMIN')">
                     <li>
                         <a href="#"><i class="fa fa-question" aria-hidden="true"></i><spring:message
                                 code="menu.question" text=""/><span

@@ -11,6 +11,17 @@
         <intercept-url pattern="/" access="hasAnyRole('ROLE_USER','ROLE_STUDENT','ROLE_FACULTY','ROLE_ADMIN')"/>
         <intercept-url pattern="/welcome" access="hasAnyRole('ROLE_USER','ROLE_STUDENT','ROLE_FACULTY','ROLE_ADMIN')"/>
         <intercept-url pattern="/manageSurvey" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/newQuestion" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/questionList" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/removeQuestion" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/updateQuestion" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/manageSurvey" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/takeSurvey" access="hasRole('ROLE_STUDENT')"/>
+        <intercept-url pattern="/surveyDetails" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/updateStatus" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/generateAccount" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/generateStudentAccount" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/manageAccount" access="hasAnyRole('ROLE_ADMIN')"/>
         <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login?error" username-parameter="username" password-parameter="password"/>
         <logout
                 logout-success-url="/login"

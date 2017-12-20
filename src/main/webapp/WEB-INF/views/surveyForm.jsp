@@ -77,10 +77,10 @@
                                         <label>Status</label>
                                         <label class="radio-inline">
                                             <input required type="radio" name="status" id="optionsRadiosInline1"
-                                                   value="OPENED" checked>Opened
+                                                   value="0" checked>Opened
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" name="status" id="optionsRadiosInline2" value="Closed">Closed
+                                            <input type="radio" name="status" id="optionsRadiosInline2" value="1">Closed
                                         </label>
                                     </div>
 

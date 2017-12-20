@@ -44,7 +44,7 @@
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
     <session-config>
-        <session-timeout>1</session-timeout>
+        <session-timeout>5</session-timeout>
     </session-config>
     <error-page>
         <error-code>403</error-code>

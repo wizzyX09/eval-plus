@@ -67,4 +67,14 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    @Transient
+    public boolean isAdmin() {
+        for (Role role : this.getRoles()) {
+            if (role.getName().equals("ROLE_ADMIN"))
+                return true;
+        }
+        return false;
+
+    }
 }

@@ -1,6 +1,7 @@
 package edu.mum.evalplus.service;
 
 import edu.mum.evalplus.model.Survey;
+import edu.mum.evalplus.model.User;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface ISurveyService {
 
     List<Survey> findStudentSurvey(String username);
 
+    List<Survey> findFacultySurvey(User user);
 }

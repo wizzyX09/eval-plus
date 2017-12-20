@@ -1,7 +1,8 @@
 package edu.mum.evalplus.service;
 
-import edu.mum.evalplus.model.Question;
-import edu.mum.evalplus.repository.QuestionRepository;
+
+import edu.mum.evalplus.model.Faculty;
+import edu.mum.evalplus.repository.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,23 +11,23 @@ import java.util.List;
 
 @Service
 @Transactional
-public class IQuestionServiceImpl implements  IQuestionService{
+public class IFacultyServiceImpl implements IFacultyService {
 
     @Autowired
-    private QuestionRepository questionRepository;
+    private FacultyRepository questionRepository;
 
     @Override
-    public void save(Question survey) {
+    public void save(Faculty survey) {
         questionRepository.save(survey);
     }
 
     @Override
-    public List<Question> findAll() {
+    public List<Faculty> findAll() {
         return questionRepository.findAll();
     }
 
     @Override
-    public Question find(Integer id) {
+    public Faculty find(Integer id) {
         return questionRepository.findOne(id);
     }
 
@@ -36,8 +37,8 @@ public class IQuestionServiceImpl implements  IQuestionService{
     }
 
     @Override
-    public List<Question> findQuestionByEnabled(Boolean enabled) {
-        return questionRepository.findQuestionsByEnabled(enabled);
+    public Faculty findFacultyByUsername(String username) {
+        return questionRepository.findFacultyByUsername(username);
     }
 
 }

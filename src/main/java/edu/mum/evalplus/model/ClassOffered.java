@@ -15,10 +15,10 @@ public class ClassOffered implements Serializable {
     private Boolean active;
     private String name;
 
-    @ManyToMany(mappedBy = "classOfferedSet", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "classOfferedSet")
     private List<Student> students;
 
-    @OneToMany(mappedBy = "classOffered", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "classOffered")
     private List<Survey> surveys;
 
     @ManyToOne

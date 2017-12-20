@@ -19,12 +19,12 @@ public class Survey implements Serializable {
     @Enumerated
     private SurveyStatus status;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinTable(name = "survey_question", joinColumns = @JoinColumn(name = "survey_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> questions;
 
 
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
     private Set<SurveyAnswer> answers;
 
     @ManyToOne
@@ -161,7 +161,7 @@ public class Survey implements Serializable {
 
     private SurveyReport computeResponse(SurveyReport mcqQuestionReport, SurveyAnswer surveyAnswer) {
         if (surveyAnswer.getAnswer().equalsIgnoreCase("CompletelyAgree"))
-            mcqQuestionReport.setCompletelyAgree(mcqQuestionReport.getCompletelyDisagree() + 1);
+            mcqQuestionReport.setCompletelyAgree(mcqQuestionReport.getCompletelyAgree() + 1);
         if (surveyAnswer.getAnswer().equalsIgnoreCase("Agree"))
             mcqQuestionReport.setAgree(mcqQuestionReport.getAgree() + 1);
         if (surveyAnswer.getAnswer().equalsIgnoreCase("Neutral"))
@@ -192,20 +192,41 @@ public class Survey implements Serializable {
     }
 
     public Survey bindParam(HttpServletRequest request) {
-        String[] questionsId = request.getParameterValues("questions");
-        String classOfferedId = request.getParameter("classOffered");
-        String status = request.getParameter("status");
-        ClassOffered classOffered = new ClassOffered();
         Survey survey = new Survey();
-        classOffered.setId(Integer.parseInt(classOfferedId));
-        survey.setClassOffered(classOffered);
-        survey.setStatus(status.equals(SurveyStatus.OPENED) ? SurveyStatus.OPENED : SurveyStatus.CLOSED);
-        survey.setCreatedDate(new Date());
-        for (int i = 0; i < questionsId.length; i++) {
-            Question question = new Question();
-            question.setId(Integer.parseInt(questionsId[i]));
-            survey.addQuestion(question);
+        try {
+            String[] questionsId = request.getParameterValues("questions");
+            String classOfferedId = request.getParameter("classOffered");
+
+            if (questionsId.length == 0)
+                return this;
+
+            Integer status = Integer.parseInt(request.getParameter("status"));
+            ClassOffered classOffered = new ClassOffered();
+
+            classOffered.setId(Integer.parseInt(classOfferedId));
+            survey.setClassOffered(classOffered);
+            survey.setStatus(status == 0 ? SurveyStatus.OPENED : SurveyStatus.CLOSED);
+            survey.setCreatedDate(new Date());
+            for (int i = 0; i < questionsId.length; i++) {
+                Question question = new Question();
+                question.setId(Integer.parseInt(questionsId[i]));
+                survey.addQuestion(question);
+            }
+
+        } catch (Exception ex) {
+            return survey;
         }
         return survey;
+    }
+
+    public boolean availableForStudent(Student student) {
+        if (this.status.equals(SurveyStatus.CLOSED))
+            return false;
+        for (Student stud : this.getClassOffered().getStudents()) {
+            if (stud.equals(student)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

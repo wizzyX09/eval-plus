@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,13 +51,12 @@
 <div id="wrapper">
 
     <!-- Navigation -->
-    <!-- Include menu here-->
     <jsp:include page="menu.jsp"/>
 
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Dashboard</h1>
+                <h1 class="page-header">Manage Account</h1>
             </div>
             <!-- /.col-lg-12 -->
 
@@ -64,73 +64,26 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Survey Available
+                        Account List
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <%--<table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Firstname</th>
-                                    <th>Lastname</th>
-                                    <th>Email</th>
-                                    <th>Gender</th>
-                                    <th>Username</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="student" items="${students}">
-                                    <tr>
-                                        <td>${student.id}</td>
-                                        <td>${student.firstName}</td>
-                                        <td>${student.lastName}</td>
-                                        <td>${student.email}</td>
-                                        <td>${student.gender}</td>
-                                        <td>${student.username}</td>
-                                        <td><a href="../generateStudentAccount/${student.id}">Generate an account</a></td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>--%>
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Firstname</th>
-                                    <th>Lastname</th>
-                                    <th>Email</th>
-                                    <th>Gender</th>
-                                    <th>Username</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="student" items="${students}">
-                                    <tr>
-                                        <td>${student.id}</td>
-                                        <td>${student.firstName}</td>
-                                        <td>${student.lastName}</td>
-                                        <td>${student.email}</td>
-                                        <td>${student.gender}</td>
-                                        <td>${student.username}</td>
-                                        <td>
-                                            <a href="javascript:void(0)" onclick="$('#generate').submit()">Generate an
-                                                account</a>
-                                            <form action="/generateStudentAccount/${student.id}" id="generate"
-                                                  method="post">
-                                                <input type="hidden" name="${_csrf.parameterName}"
-                                                       value="${_csrf.token}"/>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
+                        <form:form commandName="userForm" action="${contextPath}/manageAccount" method="post">
+                            <title>Edit account</title>
+                            <form:hidden path="id"/>
+                            <div class="form-group  ${error != null ? 'has-error' : ''}">
+                                <span>${message}</span>
+                                <form:input cssClass="form-control" placeholder="Username" path="username"/>
+                            </div>
+                            <div class="form-group  ${error != null ? 'has-error' : ''}">
+                                <span>${message}</span>
+                                <form:password cssClass="form-control" placeholder="password" path="password"/>
+                            </div>
+                            <span>${error}</span>
+                            <security:csrfInput/>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button class="btn btn-lg  btn-block" type="submit">Edit</button>
+                        </form:form>
                     </div>
                     <!-- /.panel-body -->
                 </div>
@@ -185,5 +138,6 @@
 </body>
 
 </html>
+
 
 

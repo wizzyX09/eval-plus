@@ -79,6 +79,7 @@
                                         <th>Class</th>
                                         <th>Status</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -89,6 +90,7 @@
                                             <td>${survey.classOffered.name}</td>
                                             <td>${survey.status}</td>
                                             <td><a href="../surveyDetails/${survey.id}">Details</a></td>
+                                            <td><a href="../updateStatus/${survey.id}">Update Status</a></td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>

@@ -4,10 +4,12 @@ import edu.mum.evalplus.model.ClassOffered;
 import edu.mum.evalplus.repository.ClassOfferedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class IClassOfferedServiceImpl implements  IClassOfferedService{
 
     @Autowired

@@ -21,7 +21,7 @@ public class Faculty implements Serializable {
     private String lastName;
     private Gender gender;
     private String email;
-    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "faculty")
     private List<ClassOffered> classOfferedSet;
 
      public Faculty() {

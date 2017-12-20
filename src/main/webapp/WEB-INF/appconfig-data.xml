@@ -71,6 +71,7 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
             </props>
         </property>
     </bean>
@@ -82,11 +83,12 @@
     </bean>
 
     <!-- Enable annotation driven transaction management -->
-    <tx:annotation-driven/>
+    <!--<tx:annotation-driven/>-->
     <!--
       Configure Spring Data JPA and set the base package of the
       repository interfaces
     -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
     <jpa:repositories base-package="edu.mum.evalplus.repository"/>
 
 
