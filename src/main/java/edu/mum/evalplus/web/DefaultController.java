@@ -13,4 +13,9 @@ public class DefaultController {
     public String welcome(Model model) {
         return "404";
     }
+
+    @RequestMapping("/403")
+    public String welcome() {
+        return "403";
+    }
 }

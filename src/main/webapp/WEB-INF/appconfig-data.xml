@@ -2,14 +2,16 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/data/jpa
     http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd">
+    http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+
+    <aop:aspectj-autoproxy/>
 
     <!-- Email beans configuration-->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -81,13 +83,49 @@
 
     <!-- Enable annotation driven transaction management -->
     <tx:annotation-driven/>
-
     <!--
       Configure Spring Data JPA and set the base package of the
       repository interfaces
     -->
-
     <jpa:repositories base-package="edu.mum.evalplus.repository"/>
+
+
+    <!-- JMS Queue Connection Factory -->
+    <bean id="jmsTopicConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiTemplate" ref="jndiTemplate"/>
+        <property name="jndiName" value="ConnectionFactory"/>
+    </bean>
+    <bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+        <property name="environment">
+            <props>
+                <prop key="java.naming.factory.initial">
+                    org.jnp.interfaces.NamingContextFactory
+                </prop>
+                <prop key="java.naming.provider.url">
+                    localhost
+                </prop>
+                <prop key="java.naming.factory.url.pkgs">
+                    org.jnp.interfaces:org.jboss.naming
+                </prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="topicDestination" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiTemplate" ref="jndiTemplate"/>
+        <property name="jndiName" value="queue/testQueue"/>
+    </bean>
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="jmsTopicConnectionFactory"/>
+        <property name="defaultDestination" ref="topicDestination"/>
+        <property name="receiveTimeout" value="5000"/>
+    </bean>
+    <bean id="messageListenerContainer"
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsTopicConnectionFactory"/>
+        <property name="destination" ref="topicDestination"/>
+        <property name="messageListener" ref="messageListener"/>
+    </bean>
+    <bean id="messageListener" class="edu.mum.evalplus.util.MyJMSMessageListener"/>
 
 
 </beans>

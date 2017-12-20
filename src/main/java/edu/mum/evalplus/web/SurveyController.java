@@ -33,7 +33,7 @@ public class SurveyController {
 
 
     @RequestMapping(value = "/newSurvey", method = RequestMethod.GET)
-    public ModelAndView surveyForm() {
+    public ModelAndView surveyForm(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("surveyForm");
         modelAndView.addObject("questionList", questionService.findAll());
         modelAndView.addObject("classList", classOfferedService.findAll());
@@ -41,13 +41,13 @@ public class SurveyController {
     }
 
     @RequestMapping(value = "/newSurvey", method = RequestMethod.POST)
-    public String createSurvey(HttpServletRequest request) {
+    public String createSurvey(HttpServletRequest request, Principal principal) {
         surveyService.save(new Survey().bindParam(request));
         return "redirect:/manageSurvey";
     }
 
     @RequestMapping(value = "/manageSurvey", method = RequestMethod.GET)
-    public ModelAndView manage(Model model) {
+    public ModelAndView manage(Model model, Principal principal) {
         ModelAndView mav = new ModelAndView("manageSurvey");
         mav.addObject("surveys", surveyService.findAll());
         return mav;
@@ -61,7 +61,7 @@ public class SurveyController {
     }
 
     @RequestMapping(value = "/takeSurvey/{id}", method = RequestMethod.GET)
-    public String takeSurvey(@PathVariable("id") int id, Model model) {
+    public String takeSurvey(@PathVariable("id") int id, Model model, Principal principal) {
         model.addAttribute("survey", surveyService.find(id));
         return "takeSurvey";
     }
@@ -75,7 +75,7 @@ public class SurveyController {
 
 
     @RequestMapping(value = "/surveyDetails/{id}", method = RequestMethod.GET)
-    public String surveyDetails(@PathVariable("id") int id, Model model) {
+    public String surveyDetails(@PathVariable("id") int id, Model model, Principal principal) {
         Survey survey = surveyService.find(id);
         Map<Question, SurveyReport> reports = survey.prepareReport();
         model.addAttribute("reports", reports);

@@ -1,7 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Available Survey</title>
+    <title>Survey report</title>
 
     <!-- DataTables CSS -->
     <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
@@ -57,51 +56,52 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Dashboard</h1>
+                <h1 class="page-header">Questions</h1>
             </div>
             <!-- /.col-lg-12 -->
-            <sec:authorize access="hasRole('ROLE_FACULTY')">
 
 
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Survey Available
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Created Date</th>
-                                        <th>Class</th>
-                                        <th>Status</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach var="survey" items="${surveys}">
-                                        <tr>
-                                            <td>${survey.id}</td>
-                                            <td>${survey.createdDate}</td>
-                                            <td>${survey.classOffered.name}</td>
-                                            <td>${survey.status}</td>
-                                            <td><a href="../surveyDetails/${survey.id}">Details</a></td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                        </div>
-                        <!-- /.panel-body -->
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Available questions for survey
                     </div>
-                    <!-- /.panel -->
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${questions}" var="question">
+
+                                    <tr>
+                                        <td>${question.id}</td>
+                                        <td>${question.question}</td>
+                                        <td>${question.type}</td>
+                                        <td>${question.enabled}</td>
+                                        <td><a href="../updateQuestion/${question.id}">update</a></td>
+                                        <td><a href="../removeQuestion/${question.id}">remove</a></td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
                 </div>
-                <!-- /.col-lg-6 -->
-            </sec:authorize>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-6 -->
 
 
         </div>

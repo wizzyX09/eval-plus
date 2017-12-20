@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
+
 @Controller
 public class UserAccountController {
     @Autowired
@@ -30,29 +32,26 @@ public class UserAccountController {
     private IStudentService studentService;
 
     @RequestMapping(value = "/generateAccount", method = RequestMethod.GET)
-    public String addAccount(Model model) {
+    public String addAccount(Model model, Principal principal) {
         model.addAttribute("students", studentService.findStudentWithNoAccount());
         return "generateStudentAccount";
     }
 
     @RequestMapping(value = "/generateStudentAccount/{id}", method = RequestMethod.GET)
-    public String addAccount(@PathVariable("id") Integer studentId) {
+    public String addAccount(@PathVariable("id") Integer studentId, Principal principal) {
         studentService.generateStudentAccount(studentId);
         return "redirect:/generateAccount";
     }
 
     @RequestMapping(value = "/manageAccount", method = RequestMethod.GET)
-    public String manageAccount(Model model) {
+    public String manageAccount(Model model, Principal principal) {
         model.addAttribute("userForm", new User());
 
         return "manageAccount";
     }
 
     @RequestMapping(value = "/manageAccount", method = RequestMethod.POST)
-    public String manageAccount(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-
-
-
+    public String manageAccount(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model, Principal principal) {
         return "redirect:/welcome";
     }
 

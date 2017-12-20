@@ -8,12 +8,15 @@
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http auto-config="true" create-session="always">
-        <intercept-url pattern="/" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/home" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/welcome" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/" access="hasAnyRole('ROLE_USER','ROLE_STUDENT','ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/welcome" access="hasAnyRole('ROLE_USER','ROLE_STUDENT','ROLE_FACULTY','ROLE_ADMIN')"/>
+        <intercept-url pattern="/manageSurvey" access="hasAnyRole('ROLE_FACULTY','ROLE_ADMIN')"/>
         <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login?error" username-parameter="username" password-parameter="password"/>
-        <logout logout-url="/logout"/>
-        <logout logout-success-url="/login?logout" />
+        <logout
+                logout-success-url="/login"
+                logout-url="/logout"
+                delete-cookies="JSESSIONID"/>
+
         <session-management>
             <concurrency-control max-sessions="1"/>
         </session-management>

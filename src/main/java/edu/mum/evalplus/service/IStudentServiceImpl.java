@@ -70,7 +70,7 @@ public class IStudentServiceImpl implements IStudentService {
         student.setUsername(student.getFirstName());
         studentRepository.save(student);
         userService.save(user);
-        emailService.sendMail(student.getEmail(), "Survey System credentials", "Welcome to Eval Plus" +
+        emailService.sendMail(student.getEmail(), "Survey System credentials", "Welcome to Eval Plus!!  " +
                 "We  created an account for you: username: " + user.getUsername() + " and password: " + user.getUsername());
     }
 }

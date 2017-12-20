@@ -4,8 +4,6 @@ import edu.mum.evalplus.model.Question;
 import edu.mum.evalplus.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +14,6 @@ public class IQuestionServiceImpl implements  IQuestionService{
     private QuestionRepository questionRepository;
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
     public void save(Question survey) {
         questionRepository.save(survey);
     }
