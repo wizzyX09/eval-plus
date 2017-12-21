@@ -75,13 +75,14 @@ public class IStudentServiceImpl implements IStudentService {
         user.setUsername(student.getFirstName().toLowerCase());
         user.setPassword(DEFAULT_PASSWORD);
         student.setUsername(student.getFirstName().toLowerCase());
-        studentRepository.save(student);
         for (Role rol : user.getRoles()) {
+            System.out.println("LOG:StudentService=====================roleName=" + rol.getName());
             if (!role.getName().equals("ROLE_STUDENT")) {
                 user.getRoles().remove(rol);
             }
         }
         userService.save(user);
+        studentRepository.save(student);
         emailService.sendMail(student.getEmail(), "Survey System credentials", "Welcome to Eval Plus!!  " +
                 "We  created an account for you: username: " + user.getUsername().toLowerCase() + " and password:wisleo ");
     }

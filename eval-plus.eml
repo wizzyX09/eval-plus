@@ -8,7 +8,6 @@
 	<lib name="Maven: org.yaml:snakeyaml:1.17" scope="RUNTIME"/>
 	<lib name="Maven: junit:junit:3.8.1" scope="TEST"/>
 	<lib name="Maven: javax.servlet:javax.servlet-api:3.1.0" scope="PROVIDED"/>
-	<lib name="CMS.jar" scope="RUNTIME"/>
 	<levels>
 		<level name="Maven: javax.mail:mail:1.4.3" value="project"/>
 		<level name="Maven: javax.activation:activation:1.1" value="project"/>

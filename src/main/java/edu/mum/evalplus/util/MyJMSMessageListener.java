@@ -1,12 +1,17 @@
 package edu.mum.evalplus.util;
 
+
+import cs544.exercise9_2.sender.ClassOffered;
+
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 
 public class MyJMSMessageListener implements MessageListener {
     @Override
     public void onMessage(Message message) {
-       /* ObjectMessage objMessage = (ObjectMessage) message;
+        ObjectMessage objMessage = (ObjectMessage) message;
         try {
             if (objMessage instanceof ClassOffered) {
                 System.out.println("Yes===========================");
@@ -15,6 +20,6 @@ public class MyJMSMessageListener implements MessageListener {
             System.out.println("Message is received:" + classOffered.getName());
         } catch (JMSException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }

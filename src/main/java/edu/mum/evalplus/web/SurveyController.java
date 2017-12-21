@@ -81,7 +81,7 @@ public class SurveyController {
             return "redirect:/login";
         Survey survey = surveyService.find(id);
         Student student = studentService.findByUsername(principal.getName());
-        if (student == null || student == null)
+        if (survey == null || student == null)
             return "redirect:/welcome";
         if (!survey.availableForStudent(student))
             return "redirect:/welcome";
@@ -100,8 +100,10 @@ public class SurveyController {
     @RequestMapping(value = "/surveyDetails/{id}", method = RequestMethod.GET)
     public String surveyDetails(@PathVariable("id") int id, Model model, Principal principal) {
         Survey survey = surveyService.find(id);
-        Map<Question, SurveyReport> reports = survey.prepareReport();
-        model.addAttribute("reports", reports);
+        if (survey != null) {
+            Map<Question, SurveyReport> reports = survey.prepareReport();
+            model.addAttribute("reports", reports);
+        }
         return "surveyDetails";
     }
 
